@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automotive Mechatronics</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            overflow-x: hidden;
+        }
+        .container {
+            width: 90%;
+            margin: auto;
+            max-width: 600px;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 8px;
+        }
+        .sub-header {
+            font-size: 20px;
+            margin: 5px 0;
+        }
+        .author {
+            position: relative;
+            font-size: 12px;
+            color: #555;
+            padding-top: 10px;
+            text-align: right;
+        }
+        .unit-box, .chapter-box, .note-box {
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+            padding: 15px;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .unit-box:hover, .chapter-box:hover, .note-box:hover {
+            background-color: #e9ecef;
+        }
+        .back-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 10px; /* Added padding to increase clickable area */
+    z-index: 100; /* Ensures it stays on top of other elements */
+}
+
+h2 {
+    margin-left: 50px; /* Adds enough margin to avoid overlap with the back button */
+}
+        .notes {
+    max-height: none;
+    font-size: 24px;
+    overflow-y: visible; /* Ensure the notes can expand fully */
+}
+        img {
+            max-width: 100%;
+            height: auto;
+            margin: 5px 0;
+            display: block;
+        }
+        @media (max-width: 720px) {
+            .author {
+                display: none; /* Hide author on smaller screens to prevent overlap */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="main_page">
+        <header>
+            <h1>Automotive Mechatronics</h1>
+            <div class="sub-header">22586</div>
+            <div class="sub-header">MK5I</div>
+        </header>
+        <div class="unit-box" onclick="loadChapters('unit1')">Unit 1: Automobile Fundamentals</div>
+        <div class="unit-box" onclick="loadChapters('unit2')">Unit 2: Automotive Sensors and Actuators</div>
+        <div class="unit-box" onclick="loadChapters('unit3')">Unit 3: Engine Management System and Warning System</div>
+        <div class="unit-box" onclick="loadChapters('unit4')">Unit 4: Automotive Control and Safety System</div>
+        <div class="unit-box" onclick="loadChapters('unit5')">Unit 5: Diagnostics and Testing</div>
+        <div class="author">Made by Mayur Kodange and Anuj Polani</div>
+    </div>
+
+    <div class="container" id="unit_page" style="display:none;">
+        <button class="back-button" onclick="goBack()">←</button>
+        <h2 id="unit_title"></h2>
+        <div id="chapters_list"></div>
+    </div>
+
+    <div class="container" id="chapter_page" style="display:none;">
+        <button class="back-button" onclick="goBackChapter()">←</button>
+        <h2 id="chapter_title"></h2>
+        <div class="notes" id="notes_content"></div>
+    </div>
+
+    <script>
+        const units = {
+            unit1: {
+                title: "Unit 1: Automobile Fundamentals",
+                chapters: {
+                    '1.1': {
+                        title: "Automobile Definition",
+                        notes: `<strong> An “automobile” </strong> is a self-propelled vehicle driven by motive unit like <b> Internal Combustion Engine </b> and is used for <b> transportation of passengers and goods on ground. </b> <br>
+                        <img src="https://cdn.dribbble.com/users/1972362/screenshots/4812330/truck.gif" alt="Truck GIF">
+                        <img src="https://i.pinimg.com/originals/ad/86/28/ad862857f01512fa44bf4730f5fdc276.gif" alt="Second GIF">`,
+                    },
+                    '1.2': {
+                        title: "Need of Automobile",
+                        notes: `<b>Personal Transportation:</b> Automobiles primarily serve individuals by providing quick and convenient travel for commuting, offering a sense of independence.<br>
+                        <img src="https://media.tenor.com/-h3v9z6mohgAAAAM/cars-driving.gif" alt="Cars Driving GIF"><br>
+                        <b>Commercial Transportation:</b> Vehicles such as trucks, vans, buses, and rickshaws are crucial for delivering goods, mail, parcels, and transporting passengers.<br>
+                        <img src="https://cdn.dribbble.com/users/1200451/screenshots/8759739/ezgif.com-optimize.gif" alt="Commercial Transportation GIF"><br>
+                        <b>Recreational Activities:</b> Automobiles facilitate leisure activities including road trips, off-roading, dirt racing, rally racing, and water crossing, making it easier to explore new places and enjoy outdoor experiences.<br>
+                        <img src="https://media3.giphy.com/media/p7uKbezbfXBbjZYFWz/200w.gif?cid=6c09b952uvfkd6w8khi4rnocjj5ki608cp16mc8rp7m48vm5&ep=v1_gifs_search&rid=200w.gif&ct=g" alt="Recreational Activities GIF">`,
+                    },
+                    '1.3': {
+    title: "Classification of Automobile",
+    notes: `<b>Purpose:</b> Passenger Vehicle, Commercial Vehicle, Recreational Vehicle<br><br>
+    <b>Fuel Type:</b> Petrol Vehicle, Diesel Vehicle, Electric Vehicle, Hybrid Vehicle, CNG Vehicle<br><br>
+<b>Number of wheels:</b> Two-wheeler, Three-wheeler, Four-wheeler, Six-wheeler<br><br>
+<b>Body Style:</b> Sedan, SUV, Hatchback, Coupe, Convertible<br><br>
+<b>Drivetrain:</b> Front-Wheel Drive, Rear-Wheel Drive, All-Wheel Drive, Four-Wheel Drive<br><br>
+<b>Engine Location:</b> Front Engine, Mid-Engine, Rear Engine<br><br>
+<b>Transmission Type:</b> Manual Transmission, Automatic Transmission, Continuous Variable Transmission (CVT), Dual-Clutch Transmission (DCT)<br><br>
+<b>Chassis Design:</b> Monocoque Chassis, Ladder Chassis, Backbone Chassis, Tubular Chassis<br><br> 
+
+          <img src="https://discovertemplate.com/wp-content/uploads/wc-document-uploads/1/Vehicle-Animated-GIF-Icon-Pack-by-Discover-Template.gif">`,
+},
+                  '1.4': {
+    title: "Major Component’s Function and Location",
+    notes: `<b>Engine</b><br>
+<b>Function:</b> Converts fuel into mechanical energy to power the vehicle<br>
+<b>Location:</b> Commonly in front of the vehicle but depends on vehicle manufacturer.<br><br>
+
+<b>Clutch</b><br>
+<b>Function:</b> To connect and disconnect engine power to the wheel<br>
+<b>Location:</b> Connected between the gearbox and engine-flywheel<br><br>
+
+<b>Gear Box</b><br>
+<b>Function:</b> Transmit power from the engine to the wheels and allowing to control the vehicle's speed and torque through different gear ratios.<br>
+<b>Location:</b> Connected between clutch and propeller shaft<br><br>
+
+<b>Brake-Calipers</b><br>
+<b>Function:</b> To slow down or stop the vehicle from motion<br>
+<b>Location:</b> Clip-like structures positioned on the brake discs which are connected to the wheels and clamp with force when braking is required.<br>
+             <img src="https://themechanicalengineering.com/wp-content/uploads/2022/08/Different-Parts-of-Car-Name.png">`,
+},
+
+'1.5': {
+    title: "Definition of Engine",
+    notes: `<b>Engine:</b><br>
+An <b>engine</b> is a machine specifically designed to convert one or more forms of <b>energy</b> into <b>mechanical energy</b>. <b> Engines</b> achieve this by transforming heat into work through various <b>thermodynamic processes</b>. <b>Automotive engines</b> for instance can operate on various fuels with <b>gasoline</b> and <b>diesel</b> being the most common for cars.<br>
+    <img src="https://media3.giphy.com/media/c78MmKQaBQc7QscmYs/giphy.gif?cid=6c09b952y05adyixw630y4j46fsmsfntgfospbhs2ha3igjf&ep=v1_internal_gif_by_id&rid=giphy.gif&ct=s">`,
+},
+
+'1.6': {
+    title: "Two Stroke Internal Combustion (IC) Engine",
+    notes: `A <b>two-stroke engine</b> is an <b>internal combustion engine</b> that completes a <b>power cycle</b> in two piston strokes (<b>one crankshaft revolution</b>). The piston moves from <b>top dead center</b> (TDC) to <b>bottom dead center</b> (BDC) and back generating one power stroke per revolution.<br>
+    <img src="https://media4.giphy.com/media/mJ4H7RUQKnajm/200w.gif?cid=6c09b952xw3bqei2gqe1a0j0u6gladivnvbgdi2zumfxy4jz&ep=v1_gifs_search&rid=200w.gif&ct=g">`,
+},
+
+'1.7': {
+    title: "Four Stroke IC Engine",
+    notes: `A <b>four-stroke engine</b> is an <b>internal combustion engine</b> that completes a <b>power cycle</b> in four steps: <b>intake</b>, <b>compression</b>, <b>power</b>, and <b>exhaust</b>. These steps occur over two revolutions of the <b>crankshaft</b>, making the engine more <b>fuel-efficient</b> and producing lower <b>emissions</b> compared to other types.<br>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/4StrokeEngine_Ortho_3D.gif">`,
+},
+
+'1.8': {
+    title: "Four Stroke IC Engine Working",
+    notes: `The working of a <b>four-stroke engine</b> involves four main steps:<br>
+<b>Intake:</b> The engine draws in a mixture of air and fuel as the piston moves down in the cylinder (<b>TDC</b> to <b>BDC</b>)<br>
+<b>Compression:</b> The piston moves back up (<b>BDC</b> to <b>TDC</b>) compressing the air-fuel mixture which increases its <b>pressure</b> and <b>temperature</b>.<br>
+<b>Power:</b> At the top of the stroke, the <b>spark plug</b> ignites the compressed mixture causing a small explosion that pushes the piston down (<b>TDC</b> to <b>BDC</b>), creating power.<br>
+<b>Exhaust:</b> Finally, the piston moves back up again (<b>BDC</b> to <b>TDC</b>) expelling the burnt gases from the cylinder through the <b>exhaust valve</b>.<br>
+This sequence repeats for each cycle allowing the engine to produce continuous power.<br>
+Each cycle gives <b>720 degrees</b> of <b>crankshaft rotation</b>.<br>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/4/4d/4StrokeEngine_Ortho_3D.gif">`,
+},
+
+'1.9': {
+    title: "Clutch",
+    notes: `<b>Clutch</b> is a mechanism which enables the <b>rotary motion</b> of one shaft to be transmitted when desired to a second shaft, the axis of which is coincident with that of the first.<br>
+    <img src="https://i.gifer.com/MkXd.gif">`,
+},
+
+'1.10': {
+    title: "Requirement of clutch",
+    notes: `It should transmit <b>125 to 150%</b> at all times.<br>
+Heat generated because of <b>friction</b> should be dissipated quickly.<br>
+<b>Vibration</b> because of friction must be low.<br>
+It should be <b>easy to operate</b>.<br>
+The clutch parts should have <b>minimum inertia</b> to avoid hard shifting or gear clashing.<br>
+`,
+},
+
+'1.11': {
+    title: "Friction Clutch",
+    notes: `When shaft <b>A</b> and disc <b>C</b> are spinning at a certain speed (<b>N rpm</b>) and shaft <b>B</b> with disc <b>D</b> is stationary, the clutch is not engaged. To engage the clutch, an <b>axial force (W)</b> is applied to disc <b>D</b>, bringing it into contact with disc <b>C</b>. Once they touch, <b>friction</b> between the two discs causes <b>D</b> to start rotating. The speed of <b>D</b> depends on the friction, which increases as the applied force <b>W</b> increases. Gradually increasing <b>W</b> will cause <b>D</b> to spin faster and eventually <b>D</b> will reach the same speed as <b>C</b>, at which point the clutch is fully engaged.<br>
+    <img src="https://img.brainkart.com/article/article-Clutch-kaV.jpg">`,
+},
+
+'1.12': {
+    title: "Cone Clutch",
+    notes: `The diagram shows a basic <b>cone clutch</b>. In this type, the contact surfaces are shaped like <b>cones</b>. When the clutch is disengaged, the <b>male cone</b> fits fully inside the <b>female cone</b> so the friction surfaces are in full contact. <b>Springs</b> keep the male cone pressed inside. When the clutch is engaged, <b>torque</b> is transferred from the <b>engine</b> through the <b>flywheel</b> and male cone to the <b>gearbox shaft</b>. To disengage the clutch, the male cone is pulled out using a <b>lever system</b> connected to the <b>clutch pedal</b>, which separates the contact surfaces.<br>
+    <img src="https://mechanicalbasics.com/wp-content/uploads/2020/08/Cone-Clutch.jpg">`,
+},
+
+'1.13': {
+    title: "Single Plate Clutch",
+    notes: `A <b>single-plate clutch</b> is used in most light vehicles to connect the <b>engine</b> to the <b>transmission</b>. It has only one <b>clutch plate</b>.<br>
+The clutch plate is a thin metal disc with <b>friction material</b> on both sides. The <b>flywheel</b> is attached to the engine and spins with it. The <b>pressure plate</b> is held against the clutch by <b>springs</b>, keeping the clutch disengaged.<br>
+When you press the <b>clutch pedal</b>, the springs compress and the pressure plate moves back, freeing the clutch plate from the flywheel. This disengages the engine from the transmission, allowing you to <b>change gears</b>. While the pedal is pressed, the clutch stays disengaged and the vehicle can change gears without moving.<br>
+    <img src="https://www.theengineerspost.com/wp-content/uploads/2019/11/single-plate-clutch.jpg">`,
+},
+
+'1.14': {
+    title: "Transmission System",
+    notes: `The <b>transmission system</b> in a vehicle includes several key parts: the <b>clutch</b>, <b>gearbox</b> (or transmission), <b>propeller shaft</b>, and <b>differential gear</b>. The clutch connects and disconnects the engine from the gearbox. The gearbox provides <b>four</b>, <b>five</b>, or even <b>six</b> different <b>gear ratios</b> to control <b>torque</b>. The propeller shaft carries the torque from the gearbox to the <b>rear axle</b>. Finally, the differential gear splits the torque evenly between the two driving wheels for smooth operation.<br>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT09TxkYlwikHeRcwq8ocIPJk3lMZm9WMMjMg&s">`,
+},
+
+'1.15': {
+    title: "Functions of a Transmission System",
+    notes: `<b>Disconnect</b> the engine from the wheels when needed.<br><br>
+<b>Connect</b> the engine to the wheels smoothly.<br><br>
+<b>Adjust leverage</b> between engine and wheels.<br><br>
+<b>Permanently reduce</b> engine speed in a fixed ratio.<br><br>
+<b>Turn</b> the drive at a right angle.<br><br>
+<b>Allow</b> for movement caused by road spring flexing.<br><br>
+<b>Account</b> for movement due to road spring flexing.<br><br>
+`,
+},
+
+'1.16': {
+    title: "General Layout of Automobile",
+    notes: `In a general <b>automobile layout</b>, the <b>engine</b> is the starting point generating power. The <b>clutch</b> follows, allowing smooth engagement and disengagement of the engine's power to the <b>gearbox</b>. The gearbox provides various <b>gear ratios</b> to control <b>speed</b> and <b>torque</b>. The <b>chassis</b> supports the vehicle's components. The <b>propeller shaft</b> transmits torque from the gearbox to the <b>differential</b>, which splits the torque to the <b>wheels</b>. The wheels move the vehicle while the <b>radiator</b> near the engine cools the engine by dissipating heat from the <b>coolant</b>.<br>
+    <img src="https://i.ytimg.com/vi/rIc6jkQv62o/sddefault.jpg">`,
+},
+
+'1.17': {
+    title: "Constant Mesh Gearbox",
+    notes: `In a <b>constant mesh gearbox</b>, all gears are always engaged with gears on the <b>layshaft</b>. The <b>main shaft</b> has gears that can rotate freely, but <b>dog clutches</b> are used to engage or disengage specific gears. By sliding the dog clutches using the <b>selector mechanism</b>, different gears are selected. Sliding the left dog clutch left engages the <b>direct gear</b>, and sliding it right engages the <b>second gear</b>. Moving the right dog clutch left selects the <b>low gear</b>, while sliding it right engages <b>reverse gear</b>.<br>
+    <img src="https://carpyscaferacers.com/wp-content/uploads/2018/01/constant-mesh-transmission.jpg">`,
+},
+
+'1.18': {
+    title: "Synchromesh Gearbox",
+    notes: `A <b>synchromesh gearbox</b> is similar to a <b>constant mesh gearbox</b> where all gears on the <b>main shaft</b> are always in mesh with the <b>layshaft gears</b>. The main difference is the addition of a <b>synchromesh device</b> that allows smoother gear engagement by matching the speeds of the gears before they connect. This removes the need for <b>double declutching</b>. When shifting gears, the parts come into frictional contact first to equalize their speed, allowing them to engage smoothly without causing <b>grinding</b> or <b>harshness</b> during gear changes.<br>
+    <img src="https://themechanicalengineering.com/wp-content/uploads/2022/01/Synchromesh-Gearbox.jpg">`,
+},
+
+'1.19': {
+    title: "Rack and Pinion Steering System",
+    notes: `The <b>rack and pinion steering gear</b> converts the <b>rotary motion</b> of the <b>steering wheel</b> into <b>linear motion</b>. The steering wheel's motion is transmitted to the <b>pinion</b> which meshes with a <b>rack</b>. This turns the circular motion of the pinion into linear movement of the rack which is then passed through <b>ball joints</b> and <b>tie rods</b> to the <b>stub axles</b>, steering the <b>wheels</b>. The <b>center take-off design</b> allows for high mounting, saving space and reducing length.<br>
+    <img src="https://learnmech.com/wp-content/uploads/2015/03/rack-and-pinion-steering-gear-mechanism-diagram-e1590573863491.jpg">`,
+},
+
+'1.20': {
+    title: "Reciprocating Ball Type Steering System",
+    notes: `The <b>reciprocating ball-type steering gear</b> features a <b>worm</b> at the end of the <b>steering rod</b> with a <b>nut</b> mounted on the worm.<br><br>
+Two sets of <b>balls</b> in grooves reduce <b>friction</b> as the nut moves along the worm.<br><br>
+The nut has <b>teeth</b> that mesh with a <b>sector gear</b> connected to a <b>drop arm</b> that steers the <b>road wheels</b> via <b>link rods</b> and <b>steering arms</b>.<br><br>
+When the <b>steering wheel</b> is turned, the balls roll in the grooves causing the nut to travel along the worm, steering the vehicle.<br>
+    <img src="https://www.ddb-tech.com/pro/auto-steering-gears/recirculating-ball-type-steering-gears/recirculating-ballnut/recirculating-ball-type-steering-gears/image003.png">`,
+},
+'1.21': {
+    title: "Leaf Spring",
+    notes: `<b>Semi-elliptic leaf springs</b> are widely used for <b>suspension</b> in light and heavy <b>commercial vehicles</b>, providing effective <b>support</b> and <b>shock absorption</b>. They work by flexing under load, distributing weight evenly and allowing for smooth vehicle movement. While commonly found in the rear suspension of cars, <b>coil springs</b> have largely replaced them in modern <b>passenger vehicles</b> due to their lighter weight and better <b>handling characteristics</b>.<br>
+    <img src="https://mechdiploma.com/sites/default/files/download%20leaf.png">`,
+},
+
+'1.22': {
+    title: "Helper Leaf Springs",
+    notes: `<b>Helper springs</b> are added to many <b>commercial vehicles</b> alongside the main <b>leaf springs</b> to support a wider range of <b>loading conditions</b>. When the vehicle is lightly loaded, the helper springs remain inactive. As the load increases, these springs engage and share the load to enhance <b>support</b> and <b>stability</b>. Helper springs are typically used only in the <b>rear suspension</b>, improving the vehicle's performance under varying <b>weight conditions</b>.<br>
+    <img src="https://1.bp.blogspot.com/-GZ-YiwqBKr0/W9H4d1Gmv7I/AAAAAAAAAYY/XddgjTvgeR4roD9w7MAhyaz_qSLYwyhwgCLcBGAs/s1600/leaf%2Bspring_helper.png">`,
+},
+
+'1.23': {
+    title: "Wishbone Type Suspension",
+    notes: `The <b>wishbone type suspension</b>, also known as <b>A-arm suspension</b>, features two arms shaped like a <b>wishbone</b> that connect the <b>wheel hub</b> to the vehicle's <b>chassis</b>. It typically includes <b>springs</b> that absorb shocks, enhancing <b>ride comfort</b>. As the wheel moves up and down, the wishbone arms pivot, allowing <b>independent movement</b> and maintaining tire contact with the road. This design improves <b>handling</b> and <b>stability</b> and is commonly used in both front and rear suspensions of modern vehicles.<br>
+    <img src="https://www.researchgate.net/publication/278850252/figure/fig4/AS:391961581244420@1470462331643/Figure-14-Schematic-view-of-Double-wishbone-suspension.png">`,
+},
+
+'1.24': {
+    title: "Air Suspension",
+    notes: `An <b>air suspension system</b> uses <b>bellows</b>, <b>diaphragms</b>, and <b>pistons</b> to provide a <b>smooth ride</b> by adjusting the vehicle's <b>height</b> and <b>load support</b>. The bellows are filled with <b>compressed air</b>, allowing them to expand and contract. When the vehicle encounters bumps, the air pressure in the bellows absorbs <b>shocks</b>. Diaphragms help maintain air pressure while pistons control the airflow to adjust <b>suspension stiffness</b> and height. This system enhances <b>ride quality</b> and <b>stability</b>, making it popular in <b>luxury vehicles</b> and <b>heavy-duty trucks</b>.<br>
+    <img src="https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcT8Vpo2OxJuvPCRpfSXI89R_AE_FnfEOp8ozVM5lQYG0mt9tBsj">`,
+},
+
+
+               
+                }
+            },
+            unit2: {
+                title: "Unit 2: Automotive Sensors and Actuators",
+                chapters: {
+                    '2.1': {
+                        title: "Sensor",
+                        notes: `<b>Sensors</b> are devices that detect and measure <b>physical properties</b> or changes in the <b>environment</b> and convert them into <b>signals</b> that can be interpreted and used by a <b>system</b>.<br>
+                        <img src="https://j.gifs.com/Kel3a9.gif" alt="Sensor GIF">`,
+                    },
+                    '2.2': {
+                        title: "Actuators",
+                        notes: `An <b>actuator</b> is a device that converts a <b>control signal</b> (typically <b>electrical</b>, <b>hydraulic</b>, or <b>pneumatic</b>) into <b>mechanical motion</b> or action.<br>
+                        <img src="https://media.tenor.com/UaKEvEVtyqwAAAAi/12v-linear-actuator-uk-ip65linear-actuator.gif" alt="Actuator GIF">`,
+                    },
+                    '2.3': {
+    title: "Variables to be Sensed in Automobile",
+    notes: `<b>Mass Air Flow</b><br><br>
+<b>Exhaust Gas Oxygen Concentration</b><br><br>
+<b>Throttle plate angular position</b><br><br>
+<b>Crankshaft and Camshaft angular position</b><br><br>
+<b>Coolant temperature</b><br><br>
+<b>Intake air temperature</b><br><br>
+<b>Ambient air temperature</b><br><br>
+<b>Manifold Absolute Pressure</b><br><br>
+<b>Vehicle Speed</b><br> <img src="https://www.researchgate.net/publication/324552482/figure/fig1/AS:616231937789952@1523932551201/Different-types-of-in-vehicle-sensors.png">
+`,
+},
+
+'2.4': {
+    title: "Mass Air Flow Rate (MAF) Sensor",
+    notes: `There are two types of <b>MAF sensors</b>:<br>
+1) <b>Vane Meter MAFS</b><br>
+2) <b>Hot-wire type MAFS</b><br><br>
+The <b>Mass Air Flow (MAF)</b> sensor is an important part of car engines located in the <b>intake air duct</b> between the <b>air filter</b> and the <b>throttle body</b>. It measures how much air is entering the engine, which helps the <b>engine control unit (ECU)</b> figure out the right amount of fuel to inject for efficient combustion. This improves <b>performance</b> and reduces <b>emissions</b>. There are two main types of MAF sensors: the <b>Hot Wire MAF Sensor</b>, which has a heated wire that cools down when air flows over it, and the ECU measures the current needed to keep it hot, and the <b>Vane Meter (or Flapper) MAF Sensor</b>, which uses a mechanical flap that opens with the incoming airflow, turning its position into an electrical signal. The MAF sensor sends this measurement as an <b>analog</b> or <b>digital signal</b> to the ECU, which processes it with information from other sensors to find the best air-fuel mixture. This real-time monitoring lets the ECU adjust the fuel delivery based on changes in airflow, ensuring the engine runs well, is more <b>fuel-efficient</b>, and produces fewer emissions.<br>
+    <img src="https://cecas.clemson.edu/cvel/auto/sensors/images/ali-airflow-sensor.png">`,
+},
+
+'2.5': {
+    title: "Engine Speed Sensor",
+    notes: `The <b>engine speed sensor</b>, also known as the <b>crankshaft position sensor</b>, is a crucial component in automotive engines that measures the <b>rotational speed</b> of the crankshaft. It generates an <b>electrical signal</b> either <b>analog</b> or <b>digital</b> based on the speed of rotation, which is vital for the <b>engine control unit (ECU)</b> to optimize <b>engine performance</b>. There are two main types of engine speed sensors: the <b>Optical Sensor</b>, which uses a light source and a photodetector to detect changes in light as a coded disc attached to the crankshaft passes by, and the <b>Hall Effect Sensor</b>, which detects changes in magnetic fields caused by a toothed wheel and generates a <b>square wave signal</b>. The ECU uses the data from the engine speed sensor to adjust <b>fuel injection timing</b> and <b>ignition timing</b>, ensuring efficient combustion and smooth engine operation.<br>
+    <img src="https://cecas.clemson.edu/cvel/auto/sensors/images/Newsome-speed_sensors.png">`,
+},
+
+'2.6': {
+    title: "Throttle Positioning Sensor",
+    notes: `The <b>throttle angle sensor</b>, also known as the <b>throttle position sensor (TPS)</b>, is an essential component in modern automotive engines that measures the position of the <b>throttle valve</b>, providing crucial data to the <b>engine control unit (ECU)</b> for adjusting <b>fuel injection</b> and <b>ignition timing</b> to ensure optimal <b>engine performance</b>. It measures how far the throttle valve is open, correlating with the driver’s acceleration input, and generates an <b>electrical signal</b> that varies with throttle position, typically in <b>voltage form</b>. There are two main types: the <b>Potentiometer-Based Sensor</b>, which uses a variable resistor to produce a changing voltage signal, and the <b>Hall Effect Sensor</b>, which detects the position of a magnet attached to the throttle shaft and generates a <b>digital signal</b>. The ECU uses the information from the throttle angle sensor to determine the appropriate <b>fuel injection amount</b> and adjust ignition timing, leading to smooth engine operation and efficient fuel consumption.<br>
+    <img src="https://premierautotrade.com.au/news/images/APS/FAST-5-APS-Components.jpg">`,
+},
+
+'2.7': {
+    title: "Knock Sensor",
+    notes: `The <b>knock sensor</b> is a vital component in modern automotive engines that detects <b>engine knocking</b> or <b>pinging</b>, which occurs when the air-fuel mixture in the combustion chamber detonates unevenly. Located on the <b>engine block</b>, the knock sensor typically consists of a <b>piezoelectric element</b> that generates an <b>electrical signal</b> in response to vibrations caused by engine knock. This signal is sent to the <b>engine control unit (ECU)</b>, which processes the data to adjust <b>ignition timing</b> and <b>fuel injection</b> to prevent knocking, enhancing <b>engine performance</b>, <b>efficiency</b>, and <b>longevity</b>. By continuously monitoring engine vibrations, the knock sensor plays a critical role in maintaining optimal <b>combustion conditions</b> and preventing potential <b>engine damage</b>.<br>
+    <img src="https://www.azosensors.com/images/Article_Images/ImageForArticle_50(1).jpg">`,
+},
+
+'2.8': {
+    title: "Exhaust Gas Oxygen Concentration Sensor",
+    notes: `The <b>exhaust gas oxygen concentration sensor</b>, commonly known as the <b>oxygen sensor (O2 sensor)</b>, is a crucial component in modern automotive <b>emissions control systems</b>. It is typically located in the <b>exhaust system</b> either before (<b>upstream</b>) or after (<b>downstream</b>) the <b>catalytic converter</b>, and its primary function is to measure the concentration of <b>oxygen</b> in the exhaust gases. The O2 sensor generates an <b>electrical signal</b> that varies based on the oxygen levels detected, which the <b>engine control unit (ECU)</b> uses to optimize the <b>air-fuel mixture</b> for efficient combustion. This helps in maintaining <b>engine performance</b>, improving <b>fuel economy</b>, and reducing harmful <b>emissions</b>. There are two main types of oxygen sensors: the <b>Zirconia Sensor</b>, which generates a voltage signal based on the difference in oxygen concentration between the exhaust and ambient air, and the <b>Titania Sensor</b>, which changes its resistance in response to oxygen levels. By providing real-time feedback to the ECU, the oxygen sensor plays a vital role in ensuring that the engine operates within optimal parameters and meets <b>emission standards</b>.<br>  
+    <img src="https://i.ytimg.com/vi/8c1NcwgkMRA/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLDAj75XkaH7c0lmiIxZ76N5g3DGJw">`,
+},
+
+'2.9': {
+    title: "Manifold Absolute Pressure Sensor",
+    notes: `The <b>Manifold Absolute Pressure (MAP)</b> sensor is a crucial component in automotive engines that measures the absolute pressure within the <b>intake manifold</b>, which helps determine the engine's load and optimize <b>fuel injection</b> and <b>ignition timing</b>. Typically located in the intake manifold or on the engine's intake duct, the MAP sensor utilizes a <b>silicon strip</b> or <b>diaphragm</b> that responds to changes in pressure. As the engine operates, the pressure in the manifold fluctuates due to changes in airflow, and these changes cause the silicon strip to bend or flex, altering its <b>electrical resistance</b> or generating a <b>voltage signal</b>. This signal is sent to the <b>engine control unit (ECU)</b>, which uses the data to adjust the <b>air-fuel mixture</b> for optimal combustion, improving <b>engine performance</b> and <b>fuel efficiency</b>. By continuously monitoring the manifold pressure, the MAP sensor plays a vital role in ensuring the engine operates efficiently across various <b>driving conditions</b>.<br>
+    <img src="https://img.quarktwin.com/blogs/new/84_1_f5c3a9f7e57243c4ae25fef5875efd4e.webp">`,
+},
+
+'2.10': {
+    title: "Intake Air Temperature Sensor",
+    notes: `The <b>Intake Air Temperature (IAT)</b> sensor is an important component in automotive engines that measures the temperature of the air entering the <b>intake manifold</b>. Typically located in the <b>intake air duct</b> or the <b>air filter housing</b>, the IAT sensor helps the <b>engine control unit (ECU)</b> optimize the <b>air-fuel mixture</b> for efficient combustion and engine performance. Most IAT sensors are <b>thermistor types</b>, which means they use a <b>thermistor</b>—a temperature-sensitive resistor—to measure air temperature. As the temperature of the incoming air changes, the resistance of the thermistor also changes; specifically, in negative temperature coefficient (<b>NTC</b>) thermistors, resistance decreases as temperature increases. This change in resistance generates a corresponding <b>voltage signal</b> that the ECU interprets to adjust <b>fuel injection timing</b> and <b>ignition timing</b> accordingly. By providing real-time data on air temperature, the IAT sensor plays a critical role in enhancing <b>engine efficiency</b>, improving <b>fuel economy</b>, and reducing <b>emissions</b>.<br>
+    <img src="https://minsingtec.com/wp-content/uploads/2024/07/bluepaper-1024x425.jpg">`,
+},
+
+'2.11': {
+    title: "Variable Valve Timing Sensor",
+    notes: `The <b>Variable Valve Timing (VVT)</b> sensor is a vital component in modern automotive engines that optimizes performance by adjusting the timing of the <b>intake</b> and <b>exhaust valves</b>. It works alongside a system comprising a <b>plunger</b>, <b>valve coil</b>, and <b>spool</b> to control valve timing based on engine conditions. The VVT sensor monitors the position of the <b>camshaft</b> and sends this data to the <b>engine control unit (ECU)</b>, which uses it to adjust the valve timing for improved <b>engine response</b>, <b>fuel efficiency</b>, and reduced <b>emissions</b>. The plunger moves in response to <b>oil pressure changes</b> affecting the valve position, while the valve regulates oil flow to the camshaft. The coil generates a <b>magnetic field</b> that assists in moving the plunger or valve, and the spool directs oil flow to achieve the desired valve timing. By continuously adapting valve timing, the VVT sensor enhances <b>combustion efficiency</b> and overall <b>engine performance</b>.<br>
+    <img src="https://www.spectrapremium.com/img/aftermarket/north-america/variable-valve-timing-solenoid/vvt-part-components--en.png">`,
+},
+                  '2.12': {
+    title: "Exhaust Gas Recirculation (EGR) Actuator",
+    notes: `The <b>Exhaust Gas Recirculation (EGR)</b> actuator is a vital component in automotive <b>emissions control systems</b> that regulates the flow of <b>exhaust gases</b> back into the engine's <b>intake manifold</b>, helping to reduce <b>nitrogen oxide (NOx)</b> emissions produced during combustion. Typically working alongside an <b>EGR valve</b>, the actuator can be <b>vacuum-operated</b> or <b>electronically controlled</b>, responding to signals from the <b>engine control unit (ECU)</b> to open or close the EGR valve based on engine conditions such as <b>load</b> and <b>temperature</b>. By precisely managing the amount of exhaust gas recirculated into the intake air, the EGR actuator lowers combustion temperatures, which minimizes NOx formation and enhances <b>engine efficiency</b> while ensuring compliance with <b>environmental regulations</b>.<br>
+    <img src="https://www.samarins.com/diagnose/diagrams/EGR-system.jpg">`,
+},
+
+                }
+            },
+            unit3: {
+                title: "Unit 3: Engine Management System and Warning System",
+                chapters: {
+                   '3.1': {
+    title: "Electronic Diesel Control System",
+    notes: `The <b>Electronic Diesel Control (EDC)</b> unit is a sophisticated electronic system that manages <b>diesel engine performance</b> by controlling <b>fuel injection</b> and optimizing <b>combustion processes</b>. It operates by utilizing various <b>sensors</b>—such as those for <b>engine speed</b>, <b>temperature</b>, and <b>manifold pressure</b>—to collect real-time data. This information is processed by the EDC's <b>microcontroller</b>, which uses <b>algorithms</b> to determine the optimal fuel injection <b>timing</b>, <b>quantity</b>, and <b>pressure</b>, ensuring efficient combustion and reduced emissions. The EDC also interfaces with other systems like <b>turbocharging</b> and <b>exhaust gas recirculation (EGR)</b> to enhance engine performance. In essence, the EDC unit dynamically adjusts <b>fuel delivery</b> based on engine conditions, enabling precise control over the combustion process, improving <b>fuel efficiency</b>, and ensuring compliance with <b>emissions standards</b> while enhancing overall <b>engine responsiveness</b>.<br>
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Dist_pump_EDC.JPG/1200px-Dist_pump_EDC.JPG">`,
+},
+
+'3.2': {
+    title: "Inputs to EDC",
+    notes: `<b>Engine Speed Sensor:</b> Provides data on the engine's <b>RPM</b>, crucial for determining the timing of <b>fuel injection</b>.<br><br>
+
+<b>Throttle Position Sensor (TPS):</b> Measures the position of the <b>throttle valve</b>, indicating the driver's demand for power and helping to adjust <b>fuel delivery</b> accordingly.<br><br>
+
+<b>Intake Air Temperature Sensor:</b> Monitors the temperature of the incoming air, which influences the <b>air density</b> and affects the <b>fuel-air mixture</b>.<br><br>
+
+<b>Manifold Absolute Pressure (MAP) Sensor:</b> Measures the pressure within the <b>intake manifold</b>, providing information on <b>engine load</b> and helping the <b>EDC</b> calculate the required fuel amount.<br><br>
+
+<b>Coolant Temperature Sensor:</b> Monitors the temperature of the <b>engine coolant</b>, allowing the EDC to adjust fuel delivery during <b>cold starts</b> and other temperature-sensitive operations.<br><br>
+
+<b>Oxygen Sensor:</b> Measures the <b>oxygen concentration</b> in the exhaust gases, helping the EDC optimize the <b>air-fuel mixture</b> for efficient combustion.<br><br>
+
+<b>Exhaust Gas Temperature (EGT) Sensor:</b> Monitors the temperature of the <b>exhaust gases</b>, providing data for managing <b>combustion efficiency</b> and <b>emissions control</b>.<br><br>
+
+<b>Fuel Temperature Sensor:</b> Measures the temperature of the <b>diesel fuel</b>, which can affect <b>fuel density</b> and <b>injection timing</b>.<br>
+
+  <img src="https://cdn-ikpocdp.nitrocdn.com/AaVTUeZkxFRjbErqSDWWjaBCYFAHMLXB/assets/images/optimized/rev-a887fa3/ascencione.com/wp-content/uploads/2023/08/Car-Sensors-AC-Video-GPS-Camera-Fuel-Ultrasonic-Radar-Infrared-Pressure.jpg">
+`,
+},
+
+'3.3': {
+    title: "Outputs from EDC",
+    notes: `<b>Fuel Injector Control Signals:</b> The EDC sends precise timing and duration signals to the fuel injectors to control the amount of <b>diesel fuel</b> injected into the <b>combustion chamber</b> for optimal combustion.<br><br>
+
+<b>Timing Control Signals:</b> Adjustments to the <b>fuel injection timing</b> are communicated to ensure that fuel is injected at the correct point in the combustion cycle for maximum <b>efficiency</b>.<br><br>
+
+<b>Boost Control Signals:</b> If the engine is equipped with a <b>turbocharger</b>, the EDC manages the turbocharger's <b>wastegate</b> or electronic actuator to optimize <b>boost pressure</b> based on engine load and speed.<br><br>
+
+<b>EGR Valve Control Signals:</b> The EDC regulates the position of the <b>exhaust gas recirculation (EGR)</b> valve to control the amount of <b>exhaust gas</b> recirculated into the <b>intake manifold</b>, reducing <b>NOx emissions</b>.<br><br>
+
+<b>Throttle Actuation Signals:</b> In systems with <b>electronic throttles</b>, the EDC can control the position of the <b>throttle plate</b> based on the driver's input and engine requirements.<br><br>
+
+<b>Diagnostic Trouble Codes (DTCs):</b> The EDC can generate DTCs for onboard diagnostics which indicate potential issues or malfunctions in the engine or <b>emissions control systems</b>.<br><br>
+
+<b>Indicator Signals:</b> The EDC may send signals to the vehicle's <b>dashboard</b> or other interfaces to inform the driver of <b>engine status</b>, <b>performance</b>, and <b>warning indicators</b>.<br>
+`,
+},
+
+'3.4': {
+    title: "Brake Actuator Warning System",
+    notes: `The <b>Brake Actuator Warning System</b> is a critical safety feature in modern vehicles that continuously monitors the <b>brake actuator's performance</b>, which controls the operation of the <b>braking system</b>. It detects malfunctions such as <b>actuator failures</b> or irregular <b>brake pressure levels</b> and triggers a <b>dashboard warning light</b> and <b>audible alert</b> to inform the driver of potential issues. By providing <b>real-time feedback</b>, this system enhances vehicle <b>safety</b> and <b>reliability</b>, allowing for timely intervention to prevent <b>brake failures</b> and ensure optimal <b>braking performance</b>. Ultimately, it plays a vital role in preventing <b>accidents</b> and maintaining compliance with <b>safety standards</b>.
+     <img src="https://m.media-amazon.com/images/I/41PGmJhBbUS._AC_UF1000,1000_QL80_.jpg">
+`,
+},
+
+'3.5': {
+    title: "Oil Pressure Warning System",
+    notes: `The <b>Oil Pressure Warning System</b> is an essential safety feature in vehicles that monitors the engine's <b>oil pressure</b> to ensure proper lubrication and prevent <b>engine damage</b>. This system uses an <b>oil pressure sensor</b> to detect the oil pressure levels within the engine; if the pressure falls below a predetermined threshold, it activates a <b>warning light</b> on the dashboard and may also trigger an <b>audible alert</b>. By providing <b>real-time feedback</b> on oil pressure, the system alerts the driver to potential issues such as <b>low oil levels</b>, <b>leaks</b>, or <b>pump failures</b>, allowing for immediate action to avoid severe engine damage. Overall, the Oil Pressure Warning System is crucial for maintaining <b>engine health</b> and preventing costly repairs, ensuring the vehicle operates safely and efficiently.
+    <img src="https://www.sunautoservice.com/wp-content/uploads/2019/06/iStock-1065782046.jpg">
+`,
+},
+
+'3.6': {
+    title: "Engine Overheat Warning System",
+    notes: `The <b>Engine Overheat Warning System</b> is a critical safety feature in vehicles that monitors the engine's <b>temperature</b> to prevent <b>overheating</b>, which can lead to severe <b>engine damage</b>. This system typically uses a <b>temperature sensor</b> located in the engine coolant passage to continuously assess the engine temperature. If the temperature exceeds a specified threshold, the system activates a <b>warning light</b> on the dashboard and may sound an <b>audible alert</b> to inform the driver of the overheating condition. This prompt allows the driver to take immediate action, such as pulling over and checking <b>coolant levels</b> or shutting off the engine to prevent catastrophic failure. By providing <b>real-time temperature feedback</b>, the Engine Overheat Warning System plays a vital role in protecting <b>engine integrity</b> and ensuring <b>vehicle reliability</b>.
+    <img src="https://northwestautohouston.com/wp-content/uploads/2019/08/OverheatingCar_NorthwestAutoCenter.jpg">
+`,
+},
+
+'3.7': {
+    title: "Air Pressure Warning System",
+    notes: `The <b>Air Pressure Warning System</b> is a crucial safety feature in vehicles, particularly those equipped with <b>pneumatic systems</b> like <b>air brakes</b> or <b>air suspension</b>. This system continuously monitors the <b>air pressure levels</b> within the pneumatic system using <b>pressure sensors</b>. If the air pressure falls below a predefined threshold, the system activates a <b>warning light</b> on the dashboard and may emit an <b>audible alert</b> to notify the driver of low air pressure conditions. This warning enables the driver to take immediate action, such as checking for <b>leaks</b> or refilling the air system to prevent <b>system failure</b> and maintain optimal <b>vehicle performance</b>. By providing <b>real-time feedback</b> on air pressure, the Air Pressure Warning System ensures the safe operation of pneumatic systems, enhancing overall <b>vehicle reliability</b> and <b>safety</b>.
+    <img src="https://www.dunntire.com/uploads/tire-pressure-warning2.jpg">
+`,
+},
+
+'3.8': {
+    title: "Speed Warning System",
+    notes: `The <b>Speed Warning System</b> is an important safety feature in vehicles that monitors the <b>speed</b> of the vehicle and alerts the driver when they exceed a predetermined <b>speed limit</b>. This system typically utilizes a <b>vehicle speed sensor</b> to measure the current speed and compares it against set thresholds. If the vehicle exceeds the specified speed, the system activates a <b>warning light</b> on the dashboard and may provide an <b>audible alert</b> or <b>vibration</b> to inform the driver. Some advanced systems also allow for <b>customizable speed settings</b>, enabling drivers to set their own speed limits for added safety. By providing <b>real-time speed feedback</b>, the Speed Warning System helps promote <b>safe driving habits</b>, reduces the risk of <b>speeding-related accidents</b>, and ensures compliance with <b>traffic regulations</b>.
+    <img src="https://www.volvocars.com/images/support/img0e2b09346776ed66c0a8015206633715_1_--_--_VOICEpnghigh.png">
+`,
+},
+
+                }
+            },
+            unit4: {
+                title: "Unit 4: Automotive Control and Safety System",
+                chapters: {
+                    '4.1': {
+    title: "Cruise Control System",
+    notes: `The <b>Cruise Control System</b> is a vehicle feature that automatically maintains a set speed without requiring the driver to press the <b>accelerator</b>, enhancing <b>comfort</b> and potentially improving <b>fuel efficiency</b> during long drives. It consists of a <b>speed sensor</b>, an <b>electronic control unit (ECU)</b>, and an <b>actuator</b> to control the <b>throttle position</b>. When activated, the driver sets their desired speed, and the ECU adjusts the throttle to maintain that speed, allowing for easy speed adjustments via controls on the <b>steering wheel</b>. The system disengages when the driver applies the <b>brakes</b> or manually turns it off. Modern vehicles may also include <b>adaptive cruise control</b>, which automatically adjusts the vehicle's speed to maintain a safe following distance from the car ahead, promoting a safer and more relaxed driving experience.
+    <img src="https://sklc-tinymce-2021.s3.amazonaws.com/comp/2022/07/MBD_P2_Adaptive_cruise_control_image_3_1658337761.gif">
+`,
+},
+
+'4.2': {
+    title: "Anti-lock Braking System",
+    notes: `<b>Anti-lock Braking System (ABS)</b> is a crucial safety feature in modern vehicles that prevents the wheels from locking up during hard braking, allowing the driver to maintain <b>steering control</b>. The system operates by utilizing <b>wheel speed sensors</b> to monitor the <b>rotational speed</b> of each wheel. If the system detects that a wheel is about to lock up, it automatically modulates <b>brake pressure</b> by rapidly applying and releasing the brakes, a process known as <b>brake pulse modulation</b>. This allows for maximum braking force while preventing wheel lockup, especially on <b>slippery surfaces</b>. ABS enhances <b>vehicle stability</b> and reduces <b>stopping distances</b>, significantly improving safety during <b>emergency braking situations</b>. Additionally, many vehicles feature <b>Electronic Brakeforce Distribution (EBD)</b> in conjunction with ABS, optimizing brake force to each wheel based on <b>load conditions</b>. Overall, ABS plays a vital role in enhancing <b>vehicle control</b> and preventing <b>skidding</b>, making it a standard feature in modern <b>automotive safety systems</b>.
+    <img src="https://media.hswstatic.com/eyJidWNrZXQiOiJjb250ZW50Lmhzd3N0YXRpYy5jb20iLCJrZXkiOiJnaWZcL2FudGktbG9jay1icmFrZTEuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjoyOTB9fX0=">
+`,
+},
+
+'4.3': {
+    title: "Electronic Suspension System",
+    notes: `The <b>Electronic Suspension System (ESS)</b> utilizes various <b>sensors</b> to optimize <b>suspension performance</b>, including <b>wheel speed sensors</b> that measure the <b>rotational speed</b> of each wheel, <b>accelerometers</b> that detect changes in vehicle motion and orientation, <b>ride height sensors</b> that monitor the distance between the vehicle body and the <b>road surface</b>, <b>steering angle sensors</b> that assess driver input for improved cornering response, and <b>lateral</b> and <b>longitudinal G-sensors</b> that evaluate handling and stability through <b>acceleration monitoring</b>. By integrating data from these sensors, the ESS makes <b>real-time adjustments</b> to the suspension system, enhancing overall <b>vehicle performance</b> and <b>comfort</b>, ultimately providing a <b>smoother ride</b> and better control in various <b>driving conditions</b>.
+    <img src="https://mechanicalelements.com/wp-content/uploads/air-single-axle.gif">
+`,
+},
+
+'4.4': {
+    title: "Electronic Steering System",
+    notes: `The <b>Electronic Power Steering (EPS)</b> system is a modern steering mechanism that assists drivers by utilizing an <b>electric motor</b> instead of traditional <b>hydraulic systems</b>, enhancing <b>steering ease</b> and <b>responsiveness</b>. It comprises a <b>torque sensor</b> that detects the force applied to the <b>steering wheel</b>, an <b>electronic control unit (ECU)</b> that processes this data, and an electric motor that provides the appropriate level of <b>steering assistance</b>, particularly at <b>low speeds</b> for easier maneuvering and reduced assistance at <b>higher speeds</b> for better control. EPS is more <b>energy-efficient</b> than hydraulic systems since it only draws power when steering assistance is needed, contributing to improved <b>fuel economy</b>. This system enhances <b>maneuverability</b>, reduces <b>driver fatigue</b>, and offers better <b>feedback</b> and <b>control</b> in various <b>driving conditions</b>, making it a popular choice in modern vehicles for a more responsive <b>driving experience</b>.
+    <img src="https://techcrunch.com/wp-content/uploads/2015/10/reverse.gif">
+`,
+},
+
+'4.5': {
+    title: "Traction Control System",
+    notes: `The <b>Traction Control System (TCS)</b> is a vital vehicle safety feature designed to prevent <b>wheel spin</b> during acceleration, ensuring optimal <b>traction</b> on slippery or uneven surfaces. The system works by utilizing <b>wheel speed sensors</b> to monitor the speed of each wheel; if it detects that a wheel is spinning faster than the others—indicative of losing traction—it automatically intervenes by reducing <b>engine power</b> or applying <b>brakes</b> to the slipping wheel. This adjustment helps maintain traction and <b>stability</b>, allowing for smoother acceleration and better control in adverse conditions, such as <b>rain</b>, <b>snow</b>, or <b>gravel</b>. TCS often works in conjunction with the <b>Anti-lock Braking System (ABS)</b> to enhance overall vehicle stability, and many modern vehicles integrate TCS into their <b>Electronic Stability Control (ESC)</b> systems, providing an added layer of safety by helping drivers maintain control during challenging driving situations. In first, the TCS is off. In second, the TCS is on.
+    <img src="https://media.tenor.com/AEDiKikTBPYAAAAM/drift.gif">
+    <img src="https://media.tenor.com/nmqy-bgKgk0AAAAM/bugatti-chiron-bugatti.gif">
+`,
+},
+
+'4.6': {
+    title: "Stability Control System",
+    notes: `<b>Stability Control</b>, often referred to as <b>Electronic Stability Control (ESC)</b>, is a critical safety system in modern vehicles designed to enhance <b>vehicle stability</b> and prevent loss of control during extreme steering maneuvers or slippery conditions. The system utilizes various <b>sensors</b>, including <b>wheel speed sensors</b>, <b>steering angle sensors</b>, and <b>lateral acceleration sensors</b>, to continuously monitor <b>vehicle dynamics</b>. If ESC detects a difference between the driver’s intended path and the actual path of the vehicle—such as during <b>oversteering</b> or <b>understeering</b>—it intervenes by automatically applying <b>brakes</b> to individual wheels and adjusting <b>engine power</b> to help the driver regain control. This proactive intervention enhances <b>traction</b> and <b>stability</b>, significantly reducing the risk of <b>skidding</b> or <b>rollover accidents</b>. By maintaining better control in challenging driving situations, ESC improves overall <b>vehicle safety</b> and is now a standard feature in many vehicles, often integrated with other systems like <b>Traction Control System (TCS)</b> for comprehensive stability management.
+    <img src="https://www.shutterstock.com/image-vector/car-driving-tips-rules-how-260nw-1539844301.jpg">
+`,
+},
+
+'4.7': {
+    title: "Integrated Engine Control System",
+    notes: `The <b>Integrated Engine Control System (IECS)</b> is a comprehensive vehicle management system that combines multiple <b>engine functions</b> into a single control unit, optimizing <b>performance</b>, <b>efficiency</b>, and <b>emissions</b>. It integrates components like the <b>Engine Control Unit (ECU)</b>, <b>Transmission Control Unit (TCU)</b>, and systems such as <b>fuel injection</b> and <b>ignition systems</b>. By using data from various <b>sensors</b>, including <b>mass air flow</b>, <b>oxygen</b>, and <b>throttle position sensors</b>, the IECS continuously monitors and adjusts engine parameters like <b>fuel delivery</b> and <b>ignition timing</b> for optimal combustion and <b>power output</b>. This system enhances engine efficiency by adapting to changing driving conditions, improving <b>fuel economy</b>, and reducing emissions, while enabling advanced features such as <b>variable valve timing</b> and <b>start-stop functionality</b>. Ultimately, the IECS streamlines <b>engine management</b>, contributing to a more efficient, powerful, and environmentally friendly driving experience.
+    <img src="https://www.veinfurt.eu/wp-content/uploads/2015/12/Engine-1024x650.png">
+`,
+},
+
+'4.8': {
+    title: "Airbags",
+    notes: `The <b>airbag</b> is a crucial safety device in vehicles designed to protect <b>occupants</b> during a collision by rapidly inflating to cushion their impact. Inside the airbag module, a small canister contains a <b>chemical propellant</b>, typically <b>sodium azide (NaN₃)</b>, which, when ignited by an <b>electric signal</b> from the vehicle's <b>crash sensors</b>, undergoes a rapid <b>exothermic reaction</b>. This reaction produces <b>nitrogen gas</b>, inflating the airbag in <b>milliseconds</b> to create a protective barrier between the occupant and the vehicle's interior. Once deployed, the airbag deflates quickly through <b>vents</b> to allow the occupant to move safely and avoid being injured by the bag itself. This fast and efficient deployment mechanism is essential for reducing the risk of <b>serious injury</b> during a crash, making airbags a vital component of modern vehicle <b>safety systems</b>
+    <img src="https://i.makeagif.com/media/7-13-2017/oOXDJX.gif">
+`,
+},
+
+'4.9': {
+    title: "Seat Belt",
+    notes: `The <b>seatbelt</b> is a critical safety feature in vehicles designed to restrain <b>occupants</b> during a collision, reducing the risk of <b>serious injury</b> or <b>ejection</b> from the vehicle. It typically consists of a strong <b>nylon</b> or <b>polyester strap</b> that is anchored at one end to the vehicle's <b>frame</b> and equipped with a <b>buckle</b> that secures the occupant. When a vehicle experiences a sudden stop or collision, the seatbelt locks in place due to an <b>inertia reel mechanism</b>, which prevents the occupant from continuing forward. Many modern seatbelts include additional safety features such as <b>pretensioners</b>, which tighten the belt upon impact to reduce slack, and <b>load limiters</b>, which allow some belt movement to reduce the force exerted on the occupant’s <b>chest</b>. By keeping occupants securely in their seats and spreading the forces of a crash over stronger parts of the body, seatbelts play a vital role in enhancing <b>passenger safety</b> and are a fundamental component of vehicle <b>safety systems</b>. The video shows, difference in wearing and not wearing a seatbelt.
+    <img src="https://www.team-bhp.com/forum/attachments/road-safety/1802591d1538029627-seatbelts-must-rear-seat-occupants-mumbai-pune-expressway-gif20180926064220.gif">
+`,
+},
+
+'4.10': {
+    title: "Park Assist System",
+    notes: `The <b>Park Assist System</b> is an advanced driver assistance technology designed to aid drivers in parking their vehicles safely and accurately, minimizing the risk of <b>collisions</b> in tight spaces. Utilizing <b>ultrasonic</b> or <b>radar sensors</b> positioned around the vehicle, the system detects nearby objects, such as other vehicles and curbs, while measuring available <b>parking space</b>. When activated, it provides <b>visual</b> and <b>auditory alerts</b> about obstacles, and in <b>automatic mode</b>, it can take control of the <b>steering</b> while the driver manages <b>acceleration</b> and <b>braking</b>, facilitating both <b>parallel</b> and <b>perpendicular parking</b>. By enhancing <b>situational awareness</b> and assisting with vehicle maneuvering, the Park Assist System significantly improves parking <b>safety</b> and <b>convenience</b>, making it particularly beneficial for <b>novice drivers</b> and in crowded <b>urban environments</b>.
+    <img src="https://techcrunch.com/wp-content/uploads/2015/10/reverse.gif">
+`,
+},
+
+'4.11': {
+    title: "Collapsible Steering Column",
+    notes: `The <b>collapsible steering column</b> is a critical safety feature in modern vehicles designed to enhance <b>occupant protection</b> during a collision. This system allows the steering column to <b>collapse</b> or <b>deform</b> upon impact, reducing the risk of injury to the driver and passengers by minimizing the chance of the <b>steering wheel</b> intruding into the passenger compartment. Typically constructed with a combination of <b>steel</b> and <b>energy-absorbing materials</b>, the collapsible steering column features a series of <b>joints</b> or <b>sections</b> that can compress under force. In the event of a crash, as the impact occurs, the column compresses and redirects <b>energy</b> away from the occupant, thus mitigating the potential for <b>chest</b> or <b>head injuries</b>. This design not only contributes to occupant safety but also helps ensure that the steering wheel remains in a secure and controlled position during <b>normal driving conditions</b>, making it an essential component of <b>vehicle safety engineering</b>.
+    <img src="https://i.makeagif.com/media/1-08-2019/E-SP__.gif">
+`,
+},
+
+'4.12': {
+    title: "Door Lock System",
+    notes: `The <b>door lock system</b> is an essential safety and security feature in vehicles that prevents unauthorized access while ensuring <b>occupant safety</b>. It consists of <b>mechanical</b> and <b>electronic components</b>, including <b>lock cylinders</b>, <b>solenoids</b>, and <b>control modules</b>, which work together to secure the doors. When the driver uses a <b>key fob</b>, <b>keyless entry system</b>, or <b>manual lock button</b>, the control module activates electronic locks, engaging solenoids to secure the locking mechanisms. Modern vehicles often incorporate <b>centralized locking systems</b> that allow all doors to be locked or unlocked simultaneously for convenience. Additionally, these systems may integrate with other vehicle security features, such as <b>alarms</b> and <b>immobilizers</b>, enhancing <b>theft protection</b>. <b>Safety locks</b> for rear doors prevent accidental openings by children, while many systems automatically unlock upon collision to facilitate quick exits for occupants, making the door lock system vital for vehicle security and occupant safety.
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/DoorAnimation1.gif/220px-DoorAnimation1.gif">
+`,
+},
+
+'4.13': {
+    title: "Global Positioning System",
+    notes: `The <b>Global Positioning System (GPS)</b> is a satellite-based navigation system that provides accurate <b>location</b> and <b>time information</b> to users anywhere on Earth, 24/7, under any weather conditions. It operates through a network of at least <b>24 satellites</b> orbiting the planet, which transmit signals to <b>GPS receivers</b>. When a GPS receiver detects signals from multiple satellites, it uses a process called <b>trilateration</b> to calculate its precise location (<b>latitude</b>, <b>longitude</b>, and <b>altitude</b>) by determining the distance to each satellite based on the time it takes for the signals to travel. GPS technology is widely used in <b>automotive navigation systems</b>, enabling <b>real-time route guidance</b>, <b>traffic updates</b>, and <b>location tracking</b> for both personal and commercial vehicles. Additionally, GPS has applications beyond navigation, including <b>geocaching</b>, <b>surveying</b>, <b>mapping</b>, and <b>emergency response</b>, making it an essential tool in various fields. Its accuracy, typically within a few meters for civilian use, can be enhanced with <b>differential GPS (DGPS)</b> or augmented systems, providing even more precise positioning for specialized applications.
+    <img src="https://mocomi.com/wp-content/uploads/2015/10/GPS.gif">
+`,
+},
+
+'4.14': {
+    title: "Pedestrian Protection System",
+    notes: `The <b>Pedestrian Protection System</b> is a vital safety feature in modern vehicles designed to minimize <b>injuries</b> to <b>pedestrians</b> in the event of a collision. Utilizing technologies such as <b>sensors</b>, <b>cameras</b>, and <b>advanced algorithms</b>, the system detects pedestrians in the vehicle's path and can initiate <b>protective measures</b> if a potential collision is identified. Key functions include <b>automatic braking</b>, which slows or stops the vehicle to avoid impact, and <b>active hoods</b> that can rise upon impact to create a <b>cushioning effect</b>, reducing injury severity. Integrated with existing safety features like <b>collision avoidance systems</b> and <b>advanced driver-assistance systems (ADAS)</b>, the Pedestrian Protection System enhances vehicle awareness and responsiveness, significantly contributing to <b>road safety</b> for vulnerable users and helping to reduce <b>traffic-related injuries</b> and fatalities in increasingly pedestrian-heavy urban environments. The video shows, the truck stopping before colliding with car automatically , it can detect pedestrians in the same way.
+    <img src="https://i.makeagif.com/media/7-30-2015/U8aEsW.gif">
+`,
+},
+
+'4.15': {
+    title: "Night Vision Pedestrian Detection",
+    notes: `<b>Night Vision Pedestrian Detection</b> is an advanced safety technology in modern vehicles that enhances <b>visibility</b> and <b>awareness</b> of pedestrians in <b>low-light conditions</b>. Utilizing <b>infrared cameras</b> or <b>thermal imaging</b>, the system detects pedestrians and potential hazards beyond the reach of standard headlights, significantly improving <b>situational awareness</b> at night or in poor visibility. When activated, the night vision system captures <b>thermal images</b>, highlighting the <b>heat signatures</b> of pedestrians, animals, and other obstacles, and alerts the driver through <b>visual displays</b> on the dashboard or heads-up displays, often indicating the distance and movement of detected individuals. Some advanced systems may integrate with safety features like <b>automatic braking</b> or <b>steering assist</b> to help avoid collisions. By extending the driver’s ability to see in darkness, Night Vision Pedestrian Detection improves <b>nighttime safety</b>, preventing accidents that might go unnoticed and making it a crucial feature for enhancing overall <b>vehicle safety</b> and <b>driver confidence</b> during nighttime driving.
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTuMdpqGEHhe892-1MfHw4D16YDS9cdqLU7rQ&s">
+`,
+},
+
+
+
+                }
+            },
+            unit5: {
+                title: "Unit 5: Diagnostics and Testing",
+                chapters: {
+                    '5.1': {
+    title: "Electronic Control System Diagnostics",
+    notes: `<b>Electronic Control System Diagnostics</b> encompasses the procedures and tools used to identify and troubleshoot issues within a vehicle's <b>electronic control systems</b>, which manage functions like <b>engine performance</b>, <b>transmission operation</b>, and <b>safety features</b>. This process typically involves connecting a <b>diagnostic scan tool</b> to the vehicle's <b>On-Board Diagnostics (OBD)</b> port to retrieve <b>Diagnostic Trouble Codes (DTCs)</b> generated by the <b>electronic control units (ECUs)</b>, which indicate specific malfunctions or failures. Technicians also monitor <b>real-time data</b> to assess <b>sensor readings</b> and <b>actuator responses</b>, helping to pinpoint issues. Advanced diagnostic tools can perform <b>waveform analysis</b> and simulate <b>electronic component performance</b>, allowing for a more comprehensive evaluation. By employing these diagnostic techniques, technicians can quickly identify faults, reduce <b>troubleshooting time</b>, and ensure proper vehicle operation, leading to improved performance and enhanced safety, which is vital in modern automotive repair due to the increasing reliance on complex <b>electronic systems</b>.
+    <img src="https://www.smlease.com/wp-content/uploads/2019/08/OBD-Diagramme.jpg">
+`,
+},
+
+'5.2': {
+    title: "Service Bay Diagnostic Tools",
+    notes: `A <b>Service Bay Diagnostic Tool</b> is a vital piece of equipment in <b>automotive repair shops</b> designed to diagnose and troubleshoot vehicle issues efficiently by interfacing with a vehicle's <b>On-Board Diagnostics (OBD)</b> system. These tools enable technicians to access a vast array of data from the vehicle's <b>electronic control units (ECUs)</b>, allowing for the reading of <b>Diagnostic Trouble Codes (DTCs)</b>, <b>real-time sensor data monitoring</b>, and various system tests across <b>engine</b>, <b>transmission</b>, <b>brakes</b>, and <b>emissions control systems</b>. Typically equipped with a <b>user-friendly interface</b>, these diagnostic tools display codes and data clearly, while advanced models offer additional functionalities such as <b>coding</b>, <b>programming</b>, and the ability to <b>reset service lights</b>, <b>recalibrate sensors</b>, or <b>update ECU software</b>. Many tools come with built-in <b>technical service bulletins (TSBs)</b> and <b>repair guides</b> to assist technicians in making informed repair decisions. By streamlining the diagnostic process and enhancing <b>repair accuracy</b>, Service Bay Diagnostic Tools significantly reduce <b>labor time</b>, improve <b>vehicle performance</b>, and ensure <b>safety</b>, making them indispensable in modern automotive diagnostics for addressing complex <b>electronic issues</b> and maintaining <b>vehicle reliability</b>.
+    <img src="https://www.shutterstock.com/image-photo/car-service-manager-mechanic-uses-600nw-1711144921.jpg">
+`,
+},
+
+'5.3': {
+    title: "Onboard Diagnostic (OBD II) Procedure of MPFI/CRDI System",
+    notes: `<b>OBD II Procedure for MPFI/CRDI Systems</b><br>
+1. <b>Connect Diagnostic Tool:</b> Begin by connecting an OBD II scanner to the vehicle's OBD port, usually located under the dashboard near the driver's seat.<br><br>
+2. <b>Turn Ignition On:</b> Switch the vehicle's ignition to the "On" position without starting the engine to power up the <b>electronic control unit (ECU)</b>.<br><br>
+3. <b>Read Diagnostic Trouble Codes (DTCs):</b> Use the diagnostic tool to read stored DTCs in the ECU. These codes indicate specific issues related to the MPFI/CRDI systems, such as problems with <b>fuel injectors</b>, <b>sensors</b>, or the <b>fuel delivery system</b>.<br><br>
+4. <b>Clear Codes:</b> After noting the codes, clear them from the ECU memory using the scanner. This step is crucial for determining whether the issue is persistent or intermittent.<br><br>
+5. <b>Monitor Live Data:</b> Start the engine and use the scanner to monitor live data from the MPFI/CRDI system, including <b>fuel pressure</b>, <b>injector pulse width</b>, <b>throttle position</b>, and <b>air-fuel ratio</b>. This data helps assess the real-time performance of the fuel injection system.<br><br>
+6. <b>Perform Functional Tests:</b> Many diagnostic tools allow for functional tests, such as activating fuel injectors or the throttle body to check for proper operation. This can help pinpoint malfunctions in the system.<br><br>
+7. <b>Analyze Results:</b> Compare the live data and functional test results against <b>manufacturer specifications</b>. This analysis can reveal issues with components such as <b>fuel pumps</b>, <b>injectors</b>, <b>sensors</b>, and the ECU.<br><br>
+8. <b>Inspect Physical Components:</b> If issues are detected, perform a visual inspection of the fuel injection system, including <b>fuel lines</b>, <b>connections</b>, and <b>electrical components</b>, to identify any signs of damage or wear.<br><br>
+9. <b>Repair or Replace Faulty Components:</b> Based on the analysis and inspections, repair or replace any faulty components identified during the diagnostic process.<br><br>
+10. <b>Recheck DTCs:</b> After repairs, repeat the DTC reading and live data monitoring to ensure that the issue has been resolved and no new codes are present.<br><br>
+11. <b>Test Drive:</b> Finally, take the vehicle for a test drive to confirm that it operates correctly under various conditions and that the MPFI/CRDI systems are functioning as intended.
+  <img src="https://us.bluedriver.com/cdn/shop/t/3/assets/BlueDriverSummary.png?v=120189584266389301081629999306">
+`,
+},
+
+'5.4': {
+    title: "Standalone Diagnosis: Sensors and Actuators",
+    notes: `<b>Diagnosis of Sensors</b><br>
+1. <b>Visual Inspection:</b> Begin with a visual inspection of the sensor for <b>physical damage</b>, <b>loose connections</b>, or <b>corrosion</b> on electrical connectors.<br><br>
+2. <b>Check Sensor Output:</b> Use a <b>multimeter</b> or <b>oscilloscope</b> to measure the sensor's output voltage or resistance. For example, a <b>temperature sensor</b> should provide a specific voltage or resistance reading based on the temperature it's measuring. Compare these readings to <b>manufacturer specifications</b>.<br><br>
+3. <b>Functional Testing:</b> For some sensors, functional tests may be performed. For instance, a <b>mass air flow (MAF)</b> sensor can be tested by monitoring the voltage output while varying the airflow using the <b>throttle</b>.<br><br>
+4. <b>Scan Tool Data:</b> Use an <b>OBD II scanner</b> to retrieve any <b>Diagnostic Trouble Codes (DTCs)</b> related to the sensor. This can provide insights into potential malfunctions.<br><br>
+
+<img src="https://pub.mdpi-res.com/sensors/sensors-21-03440/article_deploy/html/images/sensors-21-03440-g001-550.jpg?1621059130">
+
+<b>Diagnosis of Actuators</b><br>
+1. <b>Visual Inspection:</b> Start with a visual check for any visible <b>damage</b> or <b>wear</b>, and ensure that all <b>electrical connections</b> are secure.<br><br>
+2. <b>Electrical Testing:</b> Measure the voltage and current supplied to the actuator using a <b>multimeter</b>. For example, an <b>electric motor</b> should draw a specific amount of current while operating.<br><br>
+3. <b>Functional Testing:</b> Manually activate the actuator using a <b>diagnostic tool</b> to see if it responds correctly. For example, if diagnosing a <b>fuel injector</b>, you can command the injector to open and observe if it delivers fuel as expected.<br><br>
+4. <b>Scan Tool Data:</b> Similar to sensors, use an <b>OBD II scanner</b> to check for DTCs related to actuators. This information can help pinpoint issues affecting their performance.
+<img src="https://pub.mdpi-res.com/sensors/sensors-21-03440/article_deploy/html/images/sensors-21-03440-g001-550.jpg?1621059130">
+`,
+},
+
+'5.5': {
+    title: "Six-Step Approach for Component Testing",
+    notes: `The <b>six-step approach</b> for component testing in automotive diagnostics provides a structured methodology for evaluating the <b>performance</b> and <b>functionality</b> of various components, such as <b>sensors</b> and <b>actuators</b>. This approach ensures thoroughness and accuracy, helping technicians pinpoint issues effectively.<br><br>
+
+<b>Six-Step Approach for Component Testing</b><br>
+1. <b>Visual Inspection:</b> Begin with a thorough visual examination of the component and its connections. Look for signs of <b>damage</b>, <b>wear</b>, <b>corrosion</b>, or <b>loose connections</b> that could affect performance.<br><br>
+
+2. <b>Check Specifications:</b> Obtain the manufacturer’s specifications for the component being tested. This includes normal operating ranges for <b>voltage</b>, <b>resistance</b>, and other relevant parameters, ensuring a clear understanding of expected performance.<br><br>
+
+3. <b>Use Diagnostic Tools:</b> Employ appropriate diagnostic tools, such as a <b>multimeter</b>, <b>oscilloscope</b>, or <b>scan tool</b>, to measure the electrical characteristics of the component. For example, measure voltage, resistance, or current to verify whether the component operates within specified parameters.<br><br>
+
+4. <b>Functional Testing:</b> Perform functional tests to assess the component's response to various inputs. For instance, activate an actuator or simulate conditions for a sensor to observe its operational behavior and confirm it performs as intended.<br><br>
+
+5. <b>Analyze Data:</b> Compare the data collected from the tests against the manufacturer's specifications. Identify any discrepancies that may indicate a malfunction, such as readings outside the acceptable range.<br><br>
+
+6. <b>Make Recommendations:</b> Based on the analysis, determine if the component is functioning correctly or if it needs <b>repair</b> or <b>replacement</b>. Document the findings and recommendations, including any necessary corrective actions to ensure optimal <b>vehicle performance</b>.
+`,
+},
+
+'5.6': {
+    title: "Diagnostic Fault Codes",
+    notes: `<b>Diagnostic Fault/Trouble Codes (DTCs)</b> are alphanumeric codes generated by a vehicle's <b>On-Board Diagnostics (OBD)</b> system when it detects a malfunction in critical systems such as the <b>engine</b> or <b>transmission</b>. Typically structured with <b>five characters</b>, DTCs start with a <b>letter</b> indicating the system type (e.g., <b>P</b> for powertrain), followed by digits that specify whether the code is <b>generic</b> or <b>manufacturer-specific</b> and detail the particular fault. Technicians use <b>OBD II scanners</b> to read these codes, which assist in diagnosing issues by providing information on <b>components</b> or <b>circuits</b> that may be malfunctioning. Understanding and interpreting DTCs is vital for efficient <b>troubleshooting</b>, as they guide technicians to the root of problems, ensuring effective repairs and enhanced <b>vehicle reliability</b>. After addressing the identified issues, DTCs can be cleared to confirm that the problems have been resolved, as they will reappear if <b>malfunctions persist</b>.
+    <img src="https://www.team-bhp.com/sites/default/files/styles/amp_high_res/public/DTC%20Codes%201.jpeg">
+`,
+},
+
+'5.7': {
+    title: "Measuring Instruments",
+    notes: `<b>Measuring instruments</b> are vital tools in <b>automotive diagnostics</b>, enabling technicians to assess <b>electrical</b> and <b>electronic systems</b> with precision and accuracy. <b>Digital Multi-Meters (DMMs)</b> are versatile devices used to measure <b>voltage</b>, <b>current</b>, and <b>resistance</b> in circuits, providing both digital and analog readouts that assist in diagnosing issues with <b>sensors</b>, <b>actuators</b>, and <b>wiring</b> by measuring circuit parameters like <b>DC</b> and <b>AC voltage levels</b>, <b>continuity</b>, and <b>resistance values</b>. Their features, such as <b>auto-ranging</b> and <b>data hold functions</b>, facilitate complex testing scenarios, making them indispensable in the workshop.<br><br>
+
+<b>Oscilloscopes</b>, on the other hand, allow technicians to visualize <b>electrical signals</b> in real time, displaying <b>waveforms</b> that provide detailed information about <b>signal amplitude</b>, <b>frequency</b>, and <b>shape</b>. This capability is crucial for diagnosing <b>pulse-width modulation (PWM)</b> signals and analyzing sensor outputs, as it helps identify irregularities that might not be evident through standard voltage measurements.<br><br>
+
+<b>Scan tools</b> play a critical role by interfacing with a vehicle's <b>On-Board Diagnostics (OBD)</b> system to read <b>Diagnostic Trouble Codes (DTCs)</b>, view <b>live data streams</b>, and perform <b>functional tests</b>. These tools vary from basic code readers to advanced diagnostic scanners equipped with extensive features, enabling technicians to monitor <b>engine performance</b>, analyze sensor data, and execute various tests to troubleshoot issues effectively.<br><br>
+
+Lastly, <b>frequency meters</b> are specialized instruments designed to measure the <b>frequency</b> of electrical signals, making them particularly useful for assessing the performance of sensors that operate based on frequency, such as <b>speed</b> and <b>crankshaft position sensors</b>. By providing accurate frequency readings, these meters help determine whether sensors are functioning correctly and delivering the appropriate output to the vehicle's <b>electronic control unit (ECU)</b>. Collectively, these measuring instruments are essential for precise diagnostics in automotive systems, empowering technicians to effectively troubleshoot a wide range of <b>electrical</b> and <b>electronic issues</b>, thereby enhancing <b>vehicle performance</b> and ensuring <b>safety</b>.
+
+<img src="https://karolinalach.com/images/portfolio/sourceesb_maint.gif">
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/03/Tablet_oscilloscope_demo.gif">
+`,
+},
+
+                }
+            },
+        };
+
+        function loadChapters(unitKey) {
+            const unit = units[unitKey];
+            document.getElementById('unit_title').innerText = unit.title;
+            const chaptersList = document.getElementById('chapters_list');
+            chaptersList.innerHTML = '';
+
+            for (const [key, chapter] of Object.entries(unit.chapters)) {
+                const chapterBox = document.createElement('div');
+                chapterBox.className = 'chapter-box';
+                chapterBox.innerText = chapter.title;
+                chapterBox.onclick = () => loadNotes(unitKey, key);
+                chaptersList.appendChild(chapterBox);
+            }
+
+            document.getElementById('main_page').style.display = 'none';
+            document.getElementById('unit_page').style.display = 'block';
+        }
+
+        function loadNotes(unitKey, chapterKey) {
+            const chapter = units[unitKey].chapters[chapterKey];
+            document.getElementById('chapter_title').innerText = chapter.title;
+            document.getElementById('notes_content').innerHTML = chapter.notes;
+
+            document.getElementById('unit_page').style.display = 'none';
+            document.getElementById('chapter_page').style.display = 'block';
+        }
+
+        function goBack() {
+            document.getElementById('unit_page').style.display = 'none';
+            document.getElementById('main_page').style.display = 'block';
+        }
+
+        function goBackChapter() {
+            document.getElementById('chapter_page').style.display = 'none';
+            document.getElementById('unit_page').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
